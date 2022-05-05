@@ -72,7 +72,7 @@ steps:
 
   - template: /build/jobs/dotnetcli-build.yml
 
-  - template: /build/jobs/dotnet-test.yml
+  - template: /build/jobs/dotnetcli-test.yml
     parameters:
       testProjects: ${{ parameters.testProjects }}
 
