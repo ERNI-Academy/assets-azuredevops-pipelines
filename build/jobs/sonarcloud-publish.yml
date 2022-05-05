@@ -1,6 +1,6 @@
 #####################################################################################################
-### Sonarqube analyze
+### Sonarcloud publish
 
 steps:
-- task: SonarQubeAnalyze@4
-  displayName: 'Run Sonarqube Code Analysis'
+- task: SonarCloudPublish@1
+  displayName: 'Publish to Sonarcloud'

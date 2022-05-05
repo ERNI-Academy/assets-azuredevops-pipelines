@@ -11,6 +11,7 @@ parameters:
 
 steps:
 - task: SonarQubePrepare@4
+  displayName: 'Prepare analysis on Sonarqube'
   inputs:
     SonarQube: $(SonarQubeName)
     scannerMode: 'MSBuild'

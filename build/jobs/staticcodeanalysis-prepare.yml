@@ -1,0 +1,17 @@
+#####################################################################################################
+### Static Code Analysis prepare
+
+parameters:
+- name: staticCodeAnalysisRunner
+  type: string
+  default: Sonarcloud
+  values:
+  - Sonarcloud
+  - Sonarqube
+
+steps:
+  - ${{ if eq(parameters.staticCodeAnalysisRunner, 'Sonarcloud') }}:
+     template: /build/jobs/sonarcloud-prepare.yml
+
+  - ${{ if eq(parameters.staticCodeAnalysisRunner, 'Sonarqube') }}:
+     template: /build/jobs/sonarqube-prepare-msbuild.yml

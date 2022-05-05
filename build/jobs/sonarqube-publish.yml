@@ -9,5 +9,6 @@ parameters:
 
 steps:
 - task: SonarQubePublish@4
+  displayName: 'Publish to Sonarqube'
   inputs:
     pollingTimeoutSec: '${{ parameters.pollingtime }}'

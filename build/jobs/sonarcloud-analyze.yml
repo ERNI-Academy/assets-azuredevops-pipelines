@@ -1,6 +1,6 @@
 #####################################################################################################
-### Sonarqube analyze
+### Sonarcloud analysis
 
 steps:
-- task: SonarQubeAnalyze@4
-  displayName: 'Run Sonarqube Code Analysis'
+- task: SonarCloudAnalyze@1
+  displayName: 'Run Sonarcloud Code Analysis'
