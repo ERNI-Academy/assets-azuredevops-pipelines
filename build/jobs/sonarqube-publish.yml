@@ -1,0 +1,13 @@
+
+#####################################################################################################
+### Sonarqube publish
+
+parameters:
+- name: pollingtime
+  type: string
+  default: '300'
+
+steps:
+- task: SonarQubePublish@4
+  inputs:
+    pollingTimeoutSec: '${{ parameters.pollingtime }}'

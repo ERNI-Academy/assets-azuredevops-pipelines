@@ -1,0 +1,30 @@
+#####################################################################################################
+### Sonarqube prepare CLI
+### It is expected to have a SonarQubeName variable with the name of the sonarqube instance
+### It is expected to have a AzureDevOpsOrganizationUrl variable with the url of your Azure DevOps organization
+### It is expected to have a AzureDevOpsProject variable with the name of your project
+
+parameters:
+- name: projectName
+  type: string
+  default: $(Build.Repository.Name)
+
+steps:
+- task: SonarQubePrepare@4
+  inputs:
+    SonarQube: $(SonarQubeName)
+    scannerMode: 'CLI'
+    projectKey: '${{ parameters.projectName }}'
+    projectName: '${{ parameters.projectName }}'
+    projectVersion: $(Build.BuildNumber)
+    cliProjectKey: '${{ parameters.projectName }}'
+    cliProjectName: '${{ parameters.projectName }}'
+    cliProjectVersion: $(Build.BuildNumber)
+    sonar.pullrequest.vsts.instanceUrl: $(AzureDevOpsOrganizationUrl)
+    sonar.pullrequest.vsts.project: $(AzureDevOpsProject)
+    sonar.pullrequest.vsts.repository: '${{ parameters.projectName }}'
+    extraProperties: |
+        sonar.projectKey='${{ parameters.projectName }}'
+        # Additional properties that will be passed to the scanner, 
+        # Put one key=value per line, example:
+        sonar.exclusions=**/*.stories.js,**/*.spec.js,**/*.spec.ts, **/*.spec.tsx, **/index.ts, **/index.js,scripts/**,coverage/**,**/node_modules/**,**/dist/**,**/__mocks__/**,examples/**,jest.config.js,packages/vanilla/**

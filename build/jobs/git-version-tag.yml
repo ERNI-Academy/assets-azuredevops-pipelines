@@ -1,0 +1,9 @@
+#####################################################################################################
+### GitVersion tag with SemVer
+
+steps:
+- script: |
+     git tag $(GitVersion.SemVer)
+     git push origin $(GitVersion.SemVer)
+  displayName: git tag $(GitVersion.SemVer) && git push origin $(GitVersion.SemVer)
+  workingDirectory: $(Build.SourcesDirectory)

@@ -1,0 +1,33 @@
+#####################################################################################################
+### Login to ACR -> Build&Push image to ACR -> Logout from ACR
+### It is expected to have a ContainerRegistry variable with the name of the ACR service connection name
+
+parameters:
+- name: dockerfile
+  type: string
+  default: '$(Build.SourcesDirectory)/Dockerfile'
+- name: repository
+  type: string
+- name: tag
+  type: string
+
+steps:
+- task: Docker@2
+  displayName: 'Docker Login ACR $(ContainerRegistry)'
+  inputs:
+    command: login
+    containerRegistry: '$(ContainerRegistry)'
+
+- task: Docker@2
+  displayName: 'Docker Build&Push ACR $(ContainerRegistry)'
+  inputs:
+    command: buildAndPush
+    repository: '${{ parameters.repository }}'
+    dockerFile: '${{ parameters.dockerfile }}'
+    tags: '${{ parameters.tag }}'
+
+- task: Docker@2
+  displayName: 'Docker Logout ACR $(ContainerRegistry)'
+  inputs:
+    command: logout
+    containerRegistry: '$(ContainerRegistry)'

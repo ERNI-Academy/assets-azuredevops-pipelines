@@ -1,0 +1,22 @@
+#####################################################################################################
+### Helm push docker image
+
+parameters:
+- name: dockerfile
+  type: string
+  default: '$(Build.SourcesDirectory)/Dockerfile'
+- name: repository
+  type: string
+- name: tag
+  type: string
+
+steps:
+- script: |
+    export HELM_EXPERIMENTAL_OCI=1
+    helm chart save $(Build.SourcesDirectory)/src/${{ parameters.repository }}/ $(ContainerRegistry)/${{ parameters.repository }}:${{ parameters.tag }}
+  displayName: save the chart and set the alias
+
+- script: |
+    export HELM_EXPERIMENTAL_OCI=1
+    helm chart push $(ContainerRegistry)/${{ parameters.repository }}:${{ parameters.tag }}
+  displayName: push the chart to acr

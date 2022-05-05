@@ -1,0 +1,18 @@
+#####################################################################################################
+### Tfs clone bare
+
+parameters:
+- name: azureDevOpsPat
+  type: string
+
+steps:
+- task: Bash@3
+  displayName: 'git clone $(Build.Repository.Name)'
+  inputs:
+    targetType: 'inline'
+    script: |
+      git config --unset http.extraHeader
+      pat64=$(echo -n ":${pat}" |base64 -w0)
+      git clone -c http.extraHeader="Authorization: Basic ${pat64}" $(Build.Repository.Uri) $(Build.Repository.Name)
+  env:
+    pat: ${{ parameters.azureDevOpsPat }}

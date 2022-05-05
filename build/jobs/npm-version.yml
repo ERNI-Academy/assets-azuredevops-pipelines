@@ -1,0 +1,5 @@
+#####################################################################################################
+### Npm version with SemVer
+
+steps:
+- script: npm version $(GitVersion.SemVer) --allow-same-version --no-git-tag-version

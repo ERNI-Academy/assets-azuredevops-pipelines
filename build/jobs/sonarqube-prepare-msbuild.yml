@@ -1,0 +1,26 @@
+#####################################################################################################
+### Sonarqube prepare MSBuild
+### It is expected to have a SonarQubeName variable with the name of the sonarqube instance
+### It is expected to have a AzureDevOpsOrganizationUrl variable with the url of your Azure DevOps organization
+### It is expected to have a AzureDevOpsProject variable with the name of your project
+
+parameters:
+- name: projectName
+  type: string
+  default: $(Build.Repository.Name)
+
+steps:
+- task: SonarQubePrepare@4
+  inputs:
+    SonarQube: $(SonarQubeName)
+    scannerMode: 'MSBuild'
+    projectKey: '${{ parameters.projectName }}'
+    projectName: '${{ parameters.projectName }}'
+    projectVersion: $(Build.BuildNumber)
+    sonar.pullrequest.vsts.instanceUrl: $(AzureDevOpsOrganizationUrl)
+    sonar.pullrequest.vsts.project: $(AzureDevOpsProject)
+    sonar.pullrequest.vsts.repository: '${{ parameters.projectName }}'
+    extraProperties: |
+     sonar.exclusions=**/obj/**,**/*.dll
+     sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml
+     sonar.cs.xunit.reportsPaths=**/*.trx

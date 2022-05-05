@@ -1,0 +1,24 @@
+#####################################################################################################
+### DotNet publish a web project and will put the output in ArtifactStagingDirectory with the specify artifactName
+
+parameters:
+- name: webProjects
+  type: object
+  default: {}
+- name: artifactName
+  type: string
+- name: configuration
+  type: string
+  default: Release
+
+steps:
+- ${{ each project in parameters.webProjects }}:
+  - task: DotNetCoreCLI@2
+    displayName: 'DotNet Publish ${{ project }}'
+    inputs:
+      command: 'publish'
+      projects: '${{ project }}'
+      publishWebProjects: true
+      arguments: '--no-restore --configuration ${{ parameters.configuration }} --output $(Build.ArtifactStagingDirectory)/${{ parameters.artifactName }}'
+      zipAfterPublish: true
+      modifyOutputPath: false
