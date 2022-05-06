@@ -1,0 +1,34 @@
+#####################################################################################################
+### Helm pull repo from Container Registry
+### It is expected to have a ContainerRegistryName variable with the name
+### It is expected to have a ContainerRegistryUserName variable with the username
+### It is expected to have a ContainerRegistryPassword variable with the password
+
+parameters:
+- name: repository
+  type: string
+- name: tag
+  type: string
+
+steps:
+- script: |
+    export HELM_EXPERIMENTAL_OCI=1
+    echo "$(ContainerRegistryPassword)" | helm registry login $(ContainerRegistryName) --username $(ContainerRegistryUserName) --password-stdin
+  displayName: login to acr using helm
+
+- bash: |
+    export HELM_EXPERIMENTAL_OCI=1
+    helm chart pull $(ContainerRegistryName)/helm/${{ parameters.repository }}:${{ parameters.tag }}
+  displayName: get helm chart on agent
+
+- bash: |
+    export HELM_EXPERIMENTAL_OCI=1
+    helm chart export $(ContainerRegistryName)/helm/${{ parameters.repository }}:${{ parameters.tag }} --destination $(build.stagingdirectory)
+  displayName: export the chart to folder
+
+- bash: |
+    cd $(build.stagingdirectory)
+    ls -aslh
+    cd ${{ parameters.repository }}
+    ls -aslh
+  displayName: debug lines
