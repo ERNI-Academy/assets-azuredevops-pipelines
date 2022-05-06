@@ -1,0 +1,20 @@
+#####################################################################################################
+### Function deploy
+
+parameters:
+  - name: azureSubscription
+    type: string
+
+  - name: functionName
+    type: string
+
+  - name: artifactName
+    type: string
+    default: 'function'
+
+steps:
+- task: AzureFunctionApp@1
+  inputs:
+    azureSubscription: ${{ parameters.azureSubscription }}
+    appName: ${{ parameters.functionName }}
+    package: '$(Pipeline.Workspace)/${{ parameters.artifactName }}/${{ parameters.artifactName }}.zip'
