@@ -106,7 +106,7 @@ trigger:
     - main
 
 pool:
-  vmImage: ubuntu-lastest # or windows-latest or a hosted agent
+  vmImage: ubuntu-latest # or windows-latest or a hosted agent
 
 workspace:
   clean: all
@@ -137,7 +137,7 @@ trigger:
     - main
 
 pool:
-  vmImage: ubuntu-lastest # or windows-latest or a hosted agent
+  vmImage: ubuntu-latest # or windows-latest or a hosted agent
 
 workspace:
   clean: all
