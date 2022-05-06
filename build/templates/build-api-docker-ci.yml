@@ -68,7 +68,7 @@ steps:
 
   - template: /build/jobs/nuget-tool-install.yml
 
-  - template: /build/jobs/nuget-restore.yml
+  - template: /build/jobs/nuget-restore-nugetconfig.yml
 
   - template: /build/jobs/dotnetcli-build.yml
 
@@ -81,7 +81,7 @@ steps:
       parameters:
         staticCodeAnalysisRunner: ${{ parameters.staticCodeAnalysisRunner }}
   
-  - template: /build/jobs/nuget-push-release.yml
+  - template: /build/jobs/nuget-pack-push-release.yml
     parameters:
       nugetProjects: ${{ parameters.nugetProjects }}
 
