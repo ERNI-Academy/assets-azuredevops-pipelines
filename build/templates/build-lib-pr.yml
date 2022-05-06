@@ -1,25 +1,15 @@
 #####################################################################################################
-### Template for a CI pipeline for a dotnet api
-### Main steps Build + Test + StaticCodeAnalysis + NugetPush + Publish artifact api
+### Template for a PR pipeline for a dotnet library
+### Main steps Build + Test + StaticCodeAnalysis
 ### version 1.0.0
 
 parameters:
-# the csproj of the Api e.g. src/MyApi/MyApi.csproj
-- name: projectToPublish 
-  type: string
-
 # an array of projects to be tested e.g. - test/MyApi.UnitTests/MyApi.UnitTests.csproj
 - name: testProjects 
   type: object
   default:  # by convention tests should be placed in a folder tests, if you dont have it this way the override this param
     - 'tests/**/*.UnitTests.csproj'
     - 'tests/**/*.IntegrationTests.csproj'
-    - 'tests/**/*.ComponentTests.csproj'
-
-# an array of projects that generate nugets e.g. src/Models/Models.csproj
-- name: nugetProjects 
-  type: object
-  default: {}
 
 # a boolean to indicate if Static Code Analysis should be executed or not. Default true
 - name: staticCodeAnalysisEnabled
@@ -62,12 +52,6 @@ steps:
 
   - template: /build/jobs/dotnetcli-build.yml
 
-  - template: /build/jobs/dotnetcli-csproj-publish.yml
-    parameters:
-      webProjects:
-        - ${{ parameters.projectToPublish }}
-      artifactName: api
-
   - template: /build/jobs/dotnetcli-test.yml
     parameters:
       testProjects: ${{ parameters.testProjects }}
@@ -77,13 +61,5 @@ steps:
       parameters:
         staticCodeAnalysisRunner: ${{ parameters.staticCodeAnalysisRunner }}
   
-  - template: /build/jobs/nuget-push-release.yml
-    parameters:
-      nugetProjects: ${{ parameters.nugetProjects }}
-
-  - template: /build/jobs/publish-artifact.yml
-    parameters:
-      artifactName: api
-
   - ${{ each step in parameters.postBuildSteps }}:
     - ${{ step }}
