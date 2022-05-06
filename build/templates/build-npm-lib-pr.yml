@@ -1,6 +1,6 @@
 #####################################################################################################
 ### Template for a PR pipeline for a npm project
-### Main steps Build + StaticCodeAnalysis + Publish
+### Main steps Build + StaticCodeAnalysis
 ### version 1.0.0
 
 parameters:
