@@ -1,0 +1,6 @@
+#####################################################################################################
+### Sonarqube analyze
+
+steps:
+- task: SonarQubeAnalyze@4
+  displayName: 'Run Sonarqube Code Analysis'

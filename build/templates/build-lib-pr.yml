@@ -1,0 +1,65 @@
+#####################################################################################################
+### Template for a PR pipeline for a dotnet library
+### Main steps Build + Test + StaticCodeAnalysis
+### version 1.0.0
+
+parameters:
+# an array of projects to be tested e.g. - test/MyApi.UnitTests/MyApi.UnitTests.csproj
+- name: testProjects 
+  type: object
+  default:  # by convention tests should be placed in a folder tests, if you dont have it this way the override this param
+    - 'tests/**/*.UnitTests.csproj'
+    - 'tests/**/*.IntegrationTests.csproj'
+
+# a boolean to indicate if Static Code Analysis should be executed or not. Default true
+- name: staticCodeAnalysisEnabled
+  type: boolean
+  default: true
+
+# the Static Code Analysis runner. Default Sonarcloud
+parameters:
+- name: staticCodeAnalysisRunner
+  type: string
+  default: Sonarcloud
+  values:
+  - Sonarcloud
+  - Sonarqube
+
+# an array of steps that are going to be executed first
+- name: preBuildSteps
+  type: stepList
+  default: []
+
+# an array of steps that are going to be executed last
+- name: postBuildSteps
+  type: stepList
+  default: []
+
+steps:
+  - ${{ each step in parameters.preBuildSteps }}:
+    - ${{ step }}
+
+  - template: /build/jobs/git-version-task.yml
+
+  - ${{ if eq(parameters.staticCodeAnalysisEnabled, true) }}:
+    - template: /build/jobs/staticcodeanalysis-prepare.yml
+      parameters:
+        staticCodeAnalysisRunner: ${{ parameters.staticCodeAnalysisRunner }}
+
+  - template: /build/jobs/nuget-tool-install.yml
+
+  - template: /build/jobs/nuget-restore-nugetconfig.yml
+
+  - template: /build/jobs/dotnetcli-build.yml
+
+  - template: /build/jobs/dotnetcli-test.yml
+    parameters:
+      testProjects: ${{ parameters.testProjects }}
+
+  - ${{ if eq(parameters.staticCodeAnalysisEnabled, true) }}:
+    - template: /build/jobs/staticcodeanalysis-analyze.yml
+      parameters:
+        staticCodeAnalysisRunner: ${{ parameters.staticCodeAnalysisRunner }}
+  
+  - ${{ each step in parameters.postBuildSteps }}:
+    - ${{ step }}

@@ -1,0 +1,9 @@
+#####################################################################################################
+### Node tool install in agent
+### It is expected to have a NodeVersion variable with the version of the nuget tool desired
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '$(NodeVersion)'
+  displayName: 'Install Node.js'

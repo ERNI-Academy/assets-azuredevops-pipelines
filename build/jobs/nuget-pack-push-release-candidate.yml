@@ -1,0 +1,39 @@
+#####################################################################################################
+### Nuget pack and push a release candidate version, note that configuration by default is Debug
+### It is expected to have a RCNumber (Release Candicate Version Number) variable with the suffix for the version e.g. 1
+### It is expected to have a NugetsFeedToPublish with the name of the feed
+
+parameters:
+- name: nugetProjects
+  type: object
+  default: {}
+- name: configuration
+  type: string
+  default: Debug
+
+steps:
+- ${{ each project in parameters.nugetProjects }}:
+    - task: DotNetCoreCLI@2
+      condition: and(succeeded(), ne(variables['RCNumber'], ''))
+      displayName: DotNet pack prerelease ${{ project }} -rc$(RCNumber)
+      inputs:
+        command: custom
+        custom: pack
+        arguments: >
+          ${{ project }}
+          --configuration ${{ parameters.configuration }}
+          --no-build
+          --include-symbols
+          --include-source
+          --output $(System.DefaultWorkingDirectory)/Nuget/${{ project }}/ReleaseCandidate
+          --version-suffix -rc$(RCNumber)
+
+    - task: NuGetCommand@2
+      condition: and(succeeded(), ne(variables['RCNumber'], ''))
+      displayName: NuGet push release ${{ project }} -rc$(RCNumber)
+      inputs:
+        command: 'push'
+        packagesToPush: '$(System.DefaultWorkingDirectory)/Nuget/${{ project }}/ReleaseCandidate/*symbols.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: '$(NugetsFeedToPublish)'
+        allowPackageConflicts: true

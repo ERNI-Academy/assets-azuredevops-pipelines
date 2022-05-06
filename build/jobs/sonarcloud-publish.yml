@@ -1,0 +1,6 @@
+#####################################################################################################
+### Sonarcloud publish
+
+steps:
+- task: SonarCloudPublish@1
+  displayName: 'Publish to Sonarcloud'

@@ -1,0 +1,42 @@
+#####################################################################################################
+### Template for a PR pipeline for a npm project
+### Main steps Build + StaticCodeAnalysis
+### version 1.0.0
+
+parameters:
+# a boolean to indicate if Static Code Analysis should be executed or not. Default true
+- name: staticCodeAnalysisEnabled
+  type: boolean
+  default: true
+
+# the Static Code Analysis runner. Default Sonarcloud
+parameters:
+- name: staticCodeAnalysisRunner
+  type: string
+  default: Sonarcloud
+  values:
+  - Sonarcloud
+  - Sonarqube
+
+steps:
+  - template: /build/jobs/git-version-task.yml
+
+  - ${{ if eq(parameters.staticCodeAnalysisEnabled, true) }}:
+    - template: /build/jobs/staticcodeanalysis-prepare.yml
+      parameters:
+        staticCodeAnalysisRunner: ${{ parameters.staticCodeAnalysisRunner }}
+
+  - template: /build/jobs/npm-auth.yml
+
+  - template: /build/jobs/npm-cache.yml
+
+  - template: /build/jobs/npm-install.yml
+
+  - template: /build/jobs/npm-build.yml
+
+  - template: /build/jobs/npm-lint.yml
+
+  - ${{ if eq(parameters.staticCodeAnalysisEnabled, true) }}:
+    - template: /build/jobs/staticcodeanalysis-analyze.yml
+      parameters:
+        staticCodeAnalysisRunner: ${{ parameters.staticCodeAnalysisRunner }}

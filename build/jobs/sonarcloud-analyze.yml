@@ -1,0 +1,6 @@
+#####################################################################################################
+### Sonarcloud analysis
+
+steps:
+- task: SonarCloudAnalyze@1
+  displayName: 'Run Sonarcloud Code Analysis'

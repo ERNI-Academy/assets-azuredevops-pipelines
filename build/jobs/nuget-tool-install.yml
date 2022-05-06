@@ -1,0 +1,9 @@
+#####################################################################################################
+### Install nuget tool in agent
+### It is expected to have a NugetVersion variable with the version of the nuget tool desired
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: 'Nuget Installer ${{ parameters.nugetVersion }}'
+  inputs:
+    versionSpec: '$(NugetVersion)'

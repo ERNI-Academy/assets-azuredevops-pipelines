@@ -1,0 +1,23 @@
+#####################################################################################################
+### Sonarcloud prepare
+### It is expected to have a SonarCloudOrganizationName variable with the name of the sonarcloud organization
+### It is expected to have a SonarCloudServiceConnectionName variable with the name of the service connection to Sonarcloud
+
+parameters:
+- name: projectKey
+  type: string
+  default: $(SonarCloudOrganizationName)_$(Build.Repository.Name)
+- name: projectName
+  type: string
+  default: $(Build.Repository.Name)
+
+steps:
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare analysis on Sonarcloud'
+  inputs:
+    SonarCloud: $(SonarCloudServiceConnectionName)
+    organization: $(SonarCloudOrganizationName)
+    projectKey: '${{ parameters.projectKey }}'
+    projectName: '${{ parameters.projectName }}'
+    extraProperties: |
+      sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml

@@ -1,0 +1,9 @@
+#####################################################################################################
+### Helm install in agent
+
+steps:
+- task: HelmInstaller@0
+  displayName: Install helm
+  inputs:
+    helmVersion: 'latest'
+    installKubectl: false

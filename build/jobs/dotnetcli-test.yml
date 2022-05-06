@@ -1,0 +1,38 @@
+#####################################################################################################
+### DotNet test and will copy out files to Common.TestResultsDirectory
+
+parameters:
+- name: testProjects
+  type: object
+  default: {}
+- name: copyTestResults
+  type: boolean
+  default: true
+- name: configuration
+  type: string
+  default: Release
+
+steps:
+- ${{ each project in parameters.testProjects }}:
+  - task: DotNetCoreCLI@2
+    displayName: 'DotNet Test ${{ project }}'
+    inputs:
+      command: test
+      projects: ${{ project }}
+      arguments: '--configuration ${{ parameters.configuration }} /p:CollectCoverage=true /p:CoverletOutputFormat=opencover'
+
+  - task: CopyFiles@2
+    condition: and(succeeded(), eq('${{ parameters.copyTestResults }}', 'true'))
+    inputs:
+      displayName: 'Copy *.trx to $(Common.TestResultsDirectory)'
+      sourceFolder: $(Agent.TempDirectory)
+      contents: '*.trx' 
+      targetFolder: $(Common.TestResultsDirectory)
+
+  - task: CopyFiles@2
+    condition: and(succeeded(), eq('${{ parameters.copyTestResults }}', 'true'))
+    inputs:
+      displayName: 'Copy *.opencover.xml to $(Common.TestResultsDirectory)'
+      sourceFolder: $(Build.Repository.LocalPath)
+      contents: '*opencover.xml' 
+      targetFolder: $(Agent.TempDirectory)

@@ -1,0 +1,13 @@
+#####################################################################################################
+### GitVersion task
+
+parameters:
+- name: filepath
+  type: string
+  default: 'config/git-version.yml'
+
+steps:
+- task: gittools.gitversion.gitversion-task.GitVersion@5
+  displayName: 'Initialize GitVersion'
+  inputs:
+    configFilePath: '${{ parameters.filepath }}'

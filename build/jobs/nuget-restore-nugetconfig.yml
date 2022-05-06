@@ -1,0 +1,15 @@
+#####################################################################################################
+### Nuget restore for a solution using a feeds specified in nuget.config
+
+parameters:
+- name: solution
+  type: string
+  default: '**/*.sln'
+
+steps:
+- task: NuGetCommand@2
+  displayName: 'Nuget Restore'
+  inputs:
+    restoreSolution: '${{ parameters.solution }}'
+    feedsToUse: config
+    nugetConfigPath: nuget.config

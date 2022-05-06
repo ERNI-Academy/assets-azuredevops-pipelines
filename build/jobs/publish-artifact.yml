@@ -1,0 +1,11 @@
+#####################################################################################################
+### Publish artifact
+
+parameters:
+- name: artifactName
+  type: string
+
+steps:
+- publish: '$(Build.ArtifactStagingDirectory)/${{ parameters.artifactName }}'
+  displayName: 'Publish Artifact ${{ parameters.artifactName }}'  
+  artifact: '${{ parameters.artifactName }}'

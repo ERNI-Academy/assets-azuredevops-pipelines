@@ -1,0 +1,18 @@
+#####################################################################################################
+### DotNet build
+
+parameters:
+- name: solution
+  type: string
+  default: '**/*.sln'
+- name: configuration
+  type: string
+  default: Release
+
+steps:
+ - task: DotNetCoreCLI@2
+   displayName: 'DotNet Build Solution $(BuildConfiguration)'
+   inputs:
+     command: 'build'
+     projects: '${{ parameters.solution }}'
+     arguments: '--no-restore --configuration ${{ parameters.configuration }}'

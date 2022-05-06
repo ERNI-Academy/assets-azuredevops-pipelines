@@ -1,0 +1,30 @@
+#####################################################################################################
+### Nuget pack and push a release version using csproj nugets properties if not present a 1.0.0.0 version will be publish
+### It is expected to have a NugetsFeedToPublish with the name of the feed
+
+parameters:
+- name: nugetProjects
+  type: object
+  default: {}
+
+steps:
+- ${{ each project in parameters.nugetProjects }}:
+    - task: DotNetCoreCLI@2
+      displayName: 'DotNet pack release ${{ project }}'
+      inputs:
+        command: custom
+        custom: pack
+        arguments: >
+          ${{ project }} 
+          --configuration Release 
+          --no-build 
+          --output $(System.DefaultWorkingDirectory)/Nuget/${{ project }}/Release
+
+    - task: NuGetCommand@2
+      displayName: 'NuGet push release ${{ project }}'
+      inputs:
+        command: 'push'
+        packagesToPush: '$(System.DefaultWorkingDirectory)/Nuget/${{ project }}/Release/*.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: '$(NugetsFeedToPublish)'
+        allowPackageConflicts: true

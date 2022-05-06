@@ -1,0 +1,21 @@
+#####################################################################################################
+### Static Code Analysis analyze
+
+parameters:
+- name: staticCodeAnalysisRunner
+  type: string
+  default: Sonarcloud
+  values:
+  - Sonarcloud
+  - Sonarqube
+
+steps:
+  - ${{ if eq(parameters.staticCodeAnalysisRunner, 'Sonarcloud') }}:
+    - template: /build/jobs/sonarcloud-analyze.yml
+
+    - template: /build/jobs/sonarcloud-publish.yml
+
+  - ${{ if eq(parameters.staticCodeAnalysisRunner, 'Sonarqube') }}:
+    - template: /build/jobs/sonarqube-analyze.yml
+
+    - template: /build/jobs/sonarqube-publish.yml

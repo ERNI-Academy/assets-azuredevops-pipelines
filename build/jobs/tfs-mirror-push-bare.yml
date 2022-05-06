@@ -1,0 +1,21 @@
+#####################################################################################################
+### Tfs push bare
+
+parameters:
+- name: tfsPat
+  type: string
+- name: projectUrl
+  type: string
+
+steps:
+- task: Bash@3
+  displayName: 'git push $(Build.Repository.Name)'
+  inputs:
+    workingDirectory: $(Build.SourcesDirectory)/$(Build.Repository.Name)
+    targetType: 'inline'
+    script: |
+      git config --unset http.extraHeader
+      pat64=$(echo -n ":${tfsPat}" |base64 -w0)
+      git -c http.extraHeader="Authorization: Basic ${pat64}" push --mirror ${{ parameters.projectUrl }}/_git/$(Build.Repository.Name)
+  env:
+    pat: ${{ parameters.tfsPat }}

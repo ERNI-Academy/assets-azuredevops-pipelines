@@ -1,0 +1,17 @@
+#####################################################################################################
+### Nuget restore for a solution using a specific feed of nugets
+
+parameters:
+- name: solution
+  type: string
+  default: '**/*.sln'
+- name: feed
+  type: string
+
+steps:
+- task: NuGetCommand@2
+  displayName: 'Nuget Restore'
+  inputs:
+    restoreSolution: '${{ parameters.solution }}'
+    feedsToUse: select
+    vstsFeed: ${{ parameters.feed }}

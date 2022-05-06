@@ -1,0 +1,35 @@
+#####################################################################################################
+### Tfs create repo
+
+parameters:
+- name: tfsPat
+  type: string
+- name: organizationName
+  type: string
+- name: projectUrl
+  type: string
+- name: projectId
+  type: string
+- name: apiVersion
+  type: string
+
+steps:
+- task: Bash@3
+  displayName: 'Create repository $(Build.Repository.Name)'
+  inputs:
+    targetType: 'inline'
+    script: >
+      curl -X POST
+      -u ${{ parameters.organizationName }}:${pat}
+      --write-out "%{http_code}\n" --silent --output /dev/null
+      -H 'Accept: application/json'
+      -H 'Content-Type: application/json'
+      ${{ parameters.projectUrl }}/_apis/git/repositories?api-version=${{ parameters.apiVersion }}
+      -d '{
+          "name": "$(Build.Repository.Name)",
+          "project": {
+          "id": "${{ parameters.projectId }}"
+          }
+      }'
+  env:
+    pat: ${{ parameters.tfsPat }}

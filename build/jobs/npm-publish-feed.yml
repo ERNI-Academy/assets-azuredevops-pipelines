@@ -1,0 +1,10 @@
+#####################################################################################################
+### Npm publish in a feed
+### It is expected to have a NpmFeedToPublish variable with the name of your Azure DevOps feed
+
+steps:
+- task: Npm@1
+  inputs:
+    command: publish
+    publishRegistry: useFeed
+    publishFeed: $(NpmFeedToPublish)

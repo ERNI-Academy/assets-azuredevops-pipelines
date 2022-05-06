@@ -1,0 +1,14 @@
+# GitVersion.yml
+mode: Mainline
+next-version: 0.0.0
+branches:
+  feature:
+    regex: ^feature(s)?[/-]
+    tag: alpha 
+  release:
+    regex: ^release(s)?[/-]
+    tag: beta
+  master:
+    tag: ''
+ignore:
+  sha: []

@@ -1,0 +1,28 @@
+#####################################################################################################
+### Helm deploy
+
+parameters:
+- name: repository
+  type: string
+- name: resourceGroup
+  type: string
+- name: clusterName
+  type: string
+- name: subscription
+  type: string
+
+steps:
+
+- task: HelmDeploy@0
+  displayName: deploy chart to aks
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscription: ${{ parameters.subscription }}
+    azureResourceGroup: ${{ parameters.resourceGroup }}
+    kubernetesCluster: ${{ parameters.clusterName }}
+    namespace: ${{ parameters.repository }}
+    command: 'upgrade'
+    chartType: 'FilePath'
+    chartPath: '$(build.stagingdirectory)/${{ parameters.repository }}/'
+    releaseName: ${{ parameters.repository }}
+    arguments: '--create-namespace --install'
