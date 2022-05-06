@@ -1,0 +1,22 @@
+#####################################################################################################
+### App Service deploy
+
+parameters:
+  - name: azureSubscription
+    type: string
+
+  - name: webAppName
+    type: string
+
+  - name: artifactName
+    type: string
+    default: 'api'
+
+steps:
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: ${{ parameters.azureSubscription }}
+    WebAppKind: 'webApp'
+    WebAppName:  ${{ parameters.webAppName }}
+    Package: '$(Pipeline.Workspace)/Main/${{ parameters.artifactName }}/${{ parameters.artifactName }}.zip'
