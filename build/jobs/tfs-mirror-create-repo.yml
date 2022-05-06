@@ -10,7 +10,7 @@ parameters:
   type: string
 - name: projectId
   type: string
-- name: apVersion
+- name: apiVersion
   type: string
 
 steps:
@@ -24,7 +24,7 @@ steps:
       --write-out "%{http_code}\n" --silent --output /dev/null
       -H 'Accept: application/json'
       -H 'Content-Type: application/json'
-      ${{ parameters.projectUrl }}/_apis/git/repositories?api-version=${{ parameters.apVersion }}
+      ${{ parameters.projectUrl }}/_apis/git/repositories?api-version=${{ parameters.apiVersion }}
       -d '{
           "name": "$(Build.Repository.Name)",
           "project": {
