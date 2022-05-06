@@ -27,7 +27,7 @@ Find below the repository structure:
 
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-- [Azure DevOps ymal](https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/?view=azure-pipelines)
+- [Azure DevOps yaml](https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/?view=azure-pipelines)
 
 ## Features
 
@@ -76,7 +76,7 @@ git clone https://github.com/ERNI-Academy/assets-azuredevops-pipelines.git
 
 2. Push the code to your MyPipelines repository
 
-3. Create a pipeline in Azure DevOps from a ymal and then use the templates provided from your pipelines repository "MyPipelines", more in examples.
+3. Create a pipeline in Azure DevOps from a yaml and then use the templates provided from your pipelines repository "MyPipelines", more in examples.
 
 ## Examples
 
