@@ -160,7 +160,7 @@ Please see our [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ## Stats
 
-Check [https://repobeats.axiom.co/](https://repobeats.axiom.co/) for the right URL
+![Alt](https://repobeats.axiom.co/api/embed/057d5659b4939ddb574b7f444e3b719a07e917c7.svg "Repobeats analytics image")
 
 ## Follow us
 
