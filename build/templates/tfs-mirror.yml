@@ -12,19 +12,19 @@ parameters:
 - name: tfsPat
   type: string
 
-# the Organization Name e.g. MyOrg
-- name: organizationName
+# the Tfs Organization Name e.g. MyOrg
+- name: tfsOrganizationName
   type: string
 
-# the Project Url e.g. https://dev.azure.com/[MyOrg]/[MyProject]
-- name: projectUrl
+# the Tfs Project Url e.g. https://[tfs]/[MyOrg]/[MyProject]
+- name: tfsProjectUrl
   type: string
 
-# the Project Id (Guid)
-- name: projectId
+# the Tfs Project Id (Guid)
+- name: tfsProjectId
   type: string
 
-# the AzureDevOps api version
+# the AzureDevOps rest api version
 - name: apiVersion
   type: string
 
@@ -36,9 +36,9 @@ steps:
   - template: /build/jobs/tfs-mirror-create-repo.yml
     parameters:
       tfsPat: ${{ parameters.tfsPat }}
-      organizationName: ${{ parameters.organizationName }}
-      projectUrl: ${{ parameters.projectUrl }}
-      projectId: ${{ parameters.projectId }}
+      organizationName: ${{ parameters.tfsOrganizationName }}
+      projectUrl: ${{ parameters.tfsProjectUrl }}
+      projectId: ${{ parameters.tfsProjectId }}
       apiVersion: ${{ parameters.apiVersion }}
 
   - template: /build/jobs/tfs-mirror-push-bare.yml
