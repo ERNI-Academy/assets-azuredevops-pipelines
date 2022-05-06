@@ -28,6 +28,11 @@ Find below the repository structure:
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
 - [Azure DevOps yaml](https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/?view=azure-pipelines)
+- [Azure DevOps templates](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=azure-devops)
+- [GitVersion](https://marketplace.visualstudio.com/items?itemName=gittools.gittools)
+- [Sonarcloud](https://sonarcloud.io/)
+- [Sonarqube](https://www.sonarqube.org/)
+- [npm](https://www.npmjs.com/)
 
 ## Features
 
