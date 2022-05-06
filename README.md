@@ -109,7 +109,6 @@ workspace:
 steps:
 - template: /build/templates/build-npm-lib-ci.yml@templates
 
-- template: /build/templates/tfs-mirror.yml@templates
 ```
 
 ### nuget lib CI pipeline
