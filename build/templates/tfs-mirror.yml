@@ -1,0 +1,47 @@
+#####################################################################################################
+### Template for TFS mirror a project from AzureDevOps to TFS
+### Main steps Build + StaticCodeAnalysis + Publish
+### version 1.0.0
+
+parameters:
+# the AzureDevOps Personal Access Token, make sure to loaded from a secret
+- name: azureDevOpsPat
+  type: string
+
+# the TFS Personal Access Token, make sure to loaded from a secret
+- name: tfsPat
+  type: string
+
+# the Organization Name e.g. MyOrg
+- name: organizationName
+  type: string
+
+# the Project Url e.g. https://dev.azure.com/[MyOrg]/[MyProject]
+- name: projectUrl
+  type: string
+
+# the Project Id (Guid)
+- name: projectId
+  type: string
+
+# the AzureDevOps api version
+- name: apiVersion
+  type: string
+
+steps:
+  - template: /build/jobs/tfs-mirror-clone-bare.yml
+    parameters:
+      azureDevOpsPat: ${{ parameters.azureDevOpsPat }}
+
+  - template: /build/jobs/tfs-mirror-create-repo.yml
+    parameters:
+      tfsPat: ${{ parameters.tfsPat }}
+      organizationName: ${{ parameters.organizationName }}
+      projectUrl: ${{ parameters.projectUrl }}
+      projectId: ${{ parameters.projectId }}
+      apiVersion: ${{ parameters.apiVersion }}
+
+  - template: /build/jobs/tfs-mirror-push-bare.yml
+    parameters:
+      tfsPat: ${{ parameters.tfsPat }}
+      projectUrl: ${{ parameters.projectUrl }}
